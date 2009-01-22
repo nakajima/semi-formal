@@ -34,6 +34,5 @@ Then /^the form has a 'text field' for '(\w+)'$/ do |value|
 end
 
 Then /^the form has a submit button$/ do
-  puts @result.to_html
   @result.should have(1).submit_button
 end
