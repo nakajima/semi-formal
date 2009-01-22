@@ -30,7 +30,7 @@ Then /^the form '(\w+)' attribute is '([\w\/]+)'$/ do |name, value|
 end
 
 Then /^the form has a 'text field' for '(\w+)'$/ do |value|
-  @result.should have(1).text_field.with_attrs(:name => "person[#{value}]")
+  @result.should have(1).text_field.with_attrs(:name => "#{@model.model_name.singular}[#{value}]")
 end
 
 Then /^the form has a submit button$/ do
