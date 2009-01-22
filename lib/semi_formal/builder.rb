@@ -9,10 +9,16 @@ module SemiFormal
     def to_html
       Nokogiri::HTML::Builder.new {
         form(form_attributes) {
+          method_overrider(self)
           inputs.each { |i| i.call(self) }
           input(:type => "submit") { text "Save!" }
         }
       }.doc.to_html
+    end
+    
+    def method_overrider(doc)
+      return if instance.new_record?
+      doc.input(:type => "hidden", :name => "_method", :value => "put")
     end
     
     def inputs

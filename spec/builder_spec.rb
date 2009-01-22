@@ -1,6 +1,6 @@
 require 'spec/spec_helper'
 
-describe SemiFormal do
+describe SemiFormal::Builder do
   
   it "takes a model object" do
     SemiFormal::Builder.new(new_instance)
@@ -21,6 +21,32 @@ describe SemiFormal do
     
     it "generates a form" do
       @result.should have(1).form
+    end
+    
+    describe "method_overrider" do
+      before(:each) do
+        @instance = new_instance
+        @builder = new_builder(@instance)
+        @fake_doc = Object.new
+      end
+      
+      context "when the instance is a new object" do
+        it "does nothing" do
+          mock(@fake_doc).input(anything).never
+          @builder.method_overrider(@fake_doc)
+        end
+      end
+      
+      context "when the instance is not a new record" do
+        before(:each) do
+          @instance.save!
+        end
+        
+        it "adds a hidden field for the _method param" do
+          mock(@fake_doc).input(:type => "hidden", :name => "_method", :value => "put")
+          @builder.method_overrider(@fake_doc)
+        end
+      end
     end
     
     describe "inputs" do

@@ -7,7 +7,7 @@ module SemiFormal
     end
     
     def call(builder)
-      builder.input(:name => attr_name, :type => "text")
+      builder.input(:name => attr_name, :type => "text", :value => instance.send(name))
     end
     
     private
