@@ -12,23 +12,15 @@ describe SemiFormal::Input do
     before(:each) do
       @instance = new_instance
       @input = SemiFormal::Input.new(@instance, :age)
-      stub(@faker_builder = Object.new).input(anything)
+      stub(@faker_builder = Object.new).label
     end
     
     it "takes a Nokogiri builder context" do
       @input.call(@faker_builder)
     end
     
-    it "creates an input for the builder" do
-      mock(@faker_builder).input(anything)
-      @input.call(@faker_builder)
-    end
-    
-    it "passes the correct value" do
-      @instance.age = "22"
-      mock(@faker_builder).input(anything) do |options|
-        options[:value].should == "22"
-      end
+    it "creates a label for the input" do
+      mock(@faker_builder).label
       @input.call(@faker_builder)
     end
   end
