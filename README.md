@@ -35,4 +35,9 @@ In the block, you can use all of the helpers you get from Nokogiri's
 builder, plus you have access to the block arg which will behave like
 it does in Rails.
 
+### TODO
+
+* Only generate fields for columns that are `attr_accessible`
+* Allow an `:include` option for associations or something
+
 `(c) Copyright 2008 Pat Nakajima, released under MIT License.`
