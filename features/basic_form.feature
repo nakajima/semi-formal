@@ -12,7 +12,7 @@ Feature: Generating a basic form
     And the form has a 'text field' for 'name'
     And the form has a submit button
     
-  Scenario: Auto-Generating for a new record
+  Scenario: Auto-Generating for an existing record
     Given a model for 'people' with name:string age:string
     And I save a record with name Pat and age 22
     When I generate a form for the first record
