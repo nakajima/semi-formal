@@ -5,7 +5,7 @@ Before do
   
   @result = elements do |define|
     define.forms 'form'
-    define.text_field 'input[@type="text"]'
+    define.text_fields 'input[@type="text"]'
     define.hidden_fields 'input[@type="hidden"]'
     define.submit_button 'input[@type="submit"]'
   end
@@ -39,16 +39,12 @@ Then /^the form '(\w+)' attribute is '([\w\/]+)'$/ do |name, value|
   @result.should have(1).form.with_attrs(name => value)
 end
 
-Then /^the form has a 'text field' for '(\w+)'( with value '(\w+)')?/ do |key, hv, value|
-  @result.should have(1).text_field.with_attrs(:name => "#{@model.model_name.singular}[#{key}]")
-  @result.should have(1).text_field.with_attrs(:value => value) if value
-end
-
-Then /^the form has a 'hidden field' for '(\w+)'( with value '(\w+)')?/ do |key, hv, value|
-  @result.should have(1).hidden_field.with_attrs(:name => key)
-  @result.should have(1).hidden_field.with_attrs(:value => value) if value
+Then /^the form has (\d+) '(\w+) field' for '([\w\[\]]+)'( with value '(\w+)')?/ do |count, field_type, field_name, hv, value|
+  @result.should have(count.to_i).send("#{field_type}_fields").with_attrs(:name => field_name)
+  @result.should have(count.to_i).send("#{field_type}_fields").with_attrs(:value => value) if value
 end
 
 Then /^the form has a submit button$/ do
   @result.should have(1).submit_button
 end
+
