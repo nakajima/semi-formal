@@ -10,7 +10,7 @@ module SemiFormal
       this = self
       builder.label do
         span { text this.label_name }
-        input(:name => this.attr_name, :type => "text", :value => this.value)
+        this.decorate(self)
       end
     end
     
@@ -26,6 +26,20 @@ module SemiFormal
     
     def attr_name
       instance.class.model_name.singular + "[#{name}]"
+    end
+    
+    def field_type
+      instance.class.columns_hash[name.to_s].type
+    end
+    
+    def decorate(builder)
+      case field_type
+      when :string
+        builder.input(:name => attr_name, :type => "text", :value => value)
+      when :text
+        this = self
+        builder.textarea(:name => attr_name) { text(value.to_s) }
+      end
     end
   end
 end

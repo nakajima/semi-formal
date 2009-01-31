@@ -23,4 +23,3 @@ Feature: Generating a basic form
     And the form has 1 'text field' for 'person[age]' with value '22'
     And the form has 1 'hidden field' for '_method' with value 'put'
     And the form has a submit button
-

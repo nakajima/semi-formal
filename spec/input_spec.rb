@@ -24,4 +24,19 @@ describe SemiFormal::Input do
       @input.call(@faker_builder)
     end
   end
+  
+  describe "field_type" do
+    def input_for(name)
+      build_model(:things) { send name, :name }
+      SemiFormal::Input.new(Thing.new, :name)
+    end
+    
+    it "recognizes a string" do
+      input_for(:string).field_type.should == :string
+    end
+    
+    it "recognizes a text field" do
+      input_for(:text).field_type.should == :text
+    end
+  end
 end

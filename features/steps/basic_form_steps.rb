@@ -8,6 +8,7 @@ Before do
     define.text_fields 'input[@type="text"]'
     define.hidden_fields 'input[@type="hidden"]'
     define.submit_button 'input[@type="submit"]'
+    define.text_areas 'textarea'
   end
 end
 
@@ -39,9 +40,10 @@ Then /^the form '(\w+)' attribute is '([\w\/]+)'$/ do |name, value|
   @result.should have(1).form.with_attrs(name => value)
 end
 
-Then /^the form has (\d+) '(\w+) field' for '([\w\[\]]+)'( with value '(\w+)')?/ do |count, field_type, field_name, hv, value|
-  @result.should have(count.to_i).send("#{field_type}_fields").with_attrs(:name => field_name)
-  @result.should have(count.to_i).send("#{field_type}_fields").with_attrs(:value => value) if value
+Then /^the form has (\d+) '([\w\s]+)' for '([\w\[\]]+)'( with value '(\w+)')?/ do |count, field_type, field_name, hv, value|
+  field_type.gsub!(/\s/, '_')
+  @result.should have(count.to_i).send("#{field_type}").with_attrs(:name => field_name)
+  @result.should have(count.to_i).send("#{field_type}").with_attrs(:value => value) if value
 end
 
 Then /^the form has a submit button$/ do
