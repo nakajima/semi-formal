@@ -33,12 +33,13 @@ module SemiFormal
     end
     
     def decorate(builder)
+      this = self
       case field_type
       when :string
         builder.input(:name => attr_name, :type => "text", :value => value)
       when :text
         this = self
-        builder.textarea(:name => attr_name) { text(value.to_s) }
+        builder.textarea(:name => attr_name) { text(this.value.to_s) }
       end
     end
   end
