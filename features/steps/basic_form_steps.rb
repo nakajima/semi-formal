@@ -15,7 +15,13 @@ end
 Given /^a model for '(\w+)' with ([a-z:\s]+)$/ do |model_name, matches|
   attrs = matches.split(/\s+/)
   @model = build_model(model_name) do
-    attrs.each { |pair| send(*pair.split(':').reverse) }
+    keys = attrs.each do |pair|
+      key, value = *pair.split(':').reverse
+      send(key, value)
+      attr_accessible value
+    end
+    
+    
   end
 end
 

@@ -22,13 +22,20 @@ module SemiFormal
     end
     
     def inputs
-      @inputs ||= @instance.class.content_columns.map do |column|
+      @inputs ||= klass.content_columns.map do |column|
+        next unless klass.accessible_attributes.include?(column.name)
         Input.new(@instance, column.name)
-      end
+      end.compact
     end
     
     def form_attributes
       @form_attributes ||= Form.new(self).attributes
+    end
+    
+    private
+    
+    def klass
+      @instance.class
     end
   end
 end

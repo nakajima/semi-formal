@@ -14,6 +14,9 @@ end
 build_model(:people) do
   string :name
   string :age
+  timestamps
+  
+  attr_accessible :name, :age
 end
 
 def new_instance
