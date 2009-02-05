@@ -23,7 +23,7 @@ module SemiFormal
     
     def inputs
       @inputs ||= klass.content_columns.map do |column|
-        next unless klass.accessible_attributes.include?(column.name)
+        next unless klass.accessible_attributes.nil? or klass.accessible_attributes.include?(column.name)
         Input.new(@instance, column.name)
       end.compact
     end
