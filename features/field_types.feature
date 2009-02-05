@@ -5,10 +5,10 @@ Feature: Generating proper field types for attributes
   
   Scenario: Generating a form with a text field
     Given a model for 'people' with name:string
-    When I generate a form for a new instance
+    When I generate a form for a new Person
     Then the form has 1 'text field' for 'person[name]'
   
   Scenario: Generating a form with a text field
     Given a model for 'people' with about:text
-    When I generate a form for a new instance
+    When I generate a form for a new Person
     Then the form has 1 'text area' for 'person[about]'

@@ -9,11 +9,6 @@ describe SemiFormal::Form do
     SemiFormal::Form.new(new_builder)
   end
   
-  it "delegates instance to builder's instance" do
-    form = new_form
-    form.instance.should === form.builder.instance
-  end
-  
   it "sets the method to post" do
     new_form.method.should == 'post'
   end
@@ -38,6 +33,18 @@ describe SemiFormal::Form do
       
       it "returns the instance's resource route" do
         @form.action.should == "/people/#{@instance.to_param}"
+      end
+    end
+    
+    context "when the instance is actually an array" do
+      before(:each) do
+        @instance.save!
+        @child = @instance.friends.create!
+        @builder = new_builder([@instance, @child])
+      end
+      
+      it "returns nested action" do
+        new_form(@builder).action.should == "/people/#{@instance.to_param}/friends/#{@child.to_param}"
       end
     end
   end

@@ -2,8 +2,6 @@ module SemiFormal
   class Form
     attr_reader :builder
     
-    delegate :instance, :to => :builder
-    
     def initialize(builder)
       @builder = builder
     end
@@ -20,9 +18,17 @@ module SemiFormal
     end
     
     def action
-      path = "/#{instance.class.model_name.plural}"
-      path += "/#{instance.to_param}" unless instance.new_record?
-      path
+      instances.inject('') do |path, instance|
+        path += "/#{instance.class.model_name.plural}"
+        path += "/#{instance.to_param}" unless instance.new_record?
+        path
+      end
+    end
+    
+    private
+    
+    def instances
+      builder.instances
     end
   end
 end

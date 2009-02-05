@@ -1,9 +1,7 @@
 module SemiFormal
   class Builder
-    attr_reader :instance
-    
-    def initialize(instance)
-      @instance = instance
+    def initialize(instances)
+      @instances = instances
     end
   
     def to_html
@@ -24,7 +22,7 @@ module SemiFormal
     def inputs
       @inputs ||= klass.content_columns.map do |column|
         next unless klass.accessible_attributes.nil? or klass.accessible_attributes.include?(column.name)
-        Input.new(@instance, column.name)
+        Input.new(instance, column.name)
       end.compact
     end
     
@@ -32,10 +30,18 @@ module SemiFormal
       @form_attributes ||= Form.new(self).attributes
     end
     
+    def instances
+      Array(@instances)
+    end
+    
     private
     
+    def instance
+      @instances.is_a?(Array) ? @instances.last : @instances
+    end
+    
     def klass
-      @instance.class
+      instance.class
     end
   end
 end

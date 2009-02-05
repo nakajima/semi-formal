@@ -16,7 +16,15 @@ build_model(:people) do
   string :age
   timestamps
   
+  has_many :friends
+  
   attr_accessible :name, :age
+end
+
+build_model(:friends) do
+  integer :person_id
+  
+  belongs_to :person
 end
 
 def new_instance

@@ -12,7 +12,7 @@ Before do
   end
 end
 
-Given /^a model for '(\w+)' with ([a-z:\s]+)$/ do |model_name, matches|
+Given /^a model for '(\w+)' with ([a-z:\s_]+)$/ do |model_name, matches|
   attrs = matches.split(/\s+/)
   @model = build_model(model_name) do
     keys = attrs.each do |pair|
@@ -20,22 +20,27 @@ Given /^a model for '(\w+)' with ([a-z:\s]+)$/ do |model_name, matches|
       send(key, value)
       attr_accessible value
     end
-    
-    
   end
 end
 
-Given /^I save a record with ([\w\s\d]+)$/ do |matches|
+Given /^(.*) belongs to (.*)$/ do |child, parent|
+  child.constantize.belongs_to parent.downcase.to_sym
+end
+
+Given /^I save a (.*) with ([\w\s\d]+)$/ do |model, matches|
   attrs = Hash[*matches.gsub(/and/, '').split(/\s+/)]
-  @record = @model.create!(attrs)
+  @record = model.constantize.create!(attrs)
 end
 
-When /^I generate a form for a new instance$/ do
-  @form = SemiFormal::Builder.new(@model.new)
+When /^I generate a form for a new (.*)$/ do |model|
+  @form = SemiFormal::Builder.new(model.constantize.new)
 end
 
-When /^I generate a form for the first record$/ do
-  @form = SemiFormal::Builder.new(@record)
+When /^I generate a form for the first ([^\s]*)( with parent (.*))?$/ do |model, hv, parent|
+  args = []
+  args << (@record = model.constantize.first)
+  args.unshift @record.send(parent) if hv
+  @form = SemiFormal::Builder.new(args)
 end
 
 Then /^a form is generated$/ do

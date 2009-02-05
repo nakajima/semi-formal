@@ -5,7 +5,7 @@ Feature: Generating a basic form
   
   Scenario: Auto-Generating for a new record
     Given a model for 'people' with name:string
-    When I generate a form for a new instance
+    When I generate a form for a new Person
     Then a form is generated
     And the form 'action' attribute is '/people'
     And the form 'method' attribute is 'post'
@@ -14,8 +14,8 @@ Feature: Generating a basic form
     
   Scenario: Auto-Generating for an existing record
     Given a model for 'people' with name:string age:string
-    And I save a record with name Pat and age 22
-    When I generate a form for the first record
+    And I save a Person with name Pat and age 22
+    When I generate a form for the first Person
     Then a form is generated
     And the form 'action' attribute is '/people/1'
     And the form 'method' attribute is 'post'
